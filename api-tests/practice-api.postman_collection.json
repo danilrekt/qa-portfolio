@@ -1,0 +1,131 @@
+{
+  "info": {
+    "name": "Practice API",
+    "description": "Учебные API-тесты на https://jsonplaceholder.typicode.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com"
+    }
+  ],
+  "item": [
+    {
+      "name": "Get user by id - 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Name is Leanne Graham\", function () {",
+              "    pm.expect(pm.response.json().name).to.eql(\"Leanne Graham\");",
+              "});",
+              "",
+              "pm.test(\"Email contains @\", function () {",
+              "    pm.expect(pm.response.json().email).to.include(\"@\");",
+              "});",
+              "",
+              "pm.test(\"ID is 1 and is a number\", function () {",
+              "    pm.expect(pm.response.json().id).to.eql(1);",
+              "    pm.expect(pm.response.json().id).to.be.a(\"number\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Get non-existent user - 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test(\"Body is empty object\", function () {",
+              "    pm.expect(pm.response.json()).to.eql({});",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/9999",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "9999"]
+        }
+      }
+    },
+    {
+      "name": "Create user - 201",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response contains sent data\", function () {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data.name).to.eql(\"Test User\");",
+              "    pm.expect(data.email).to.eql(\"test@example.com\");",
+              "});",
+              "",
+              "pm.test(\"ID is a number\", function () {",
+              "    pm.expect(pm.response.json().id).to.be.a(\"number\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      }
+    }
+  ]
+}
